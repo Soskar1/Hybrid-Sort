@@ -2,6 +2,7 @@
 #define SORTING_ALGORITHMS_H
 
 #include <memory>
+#include <vector>
 
 template< template < typename, typename > class Container, typename T >
 void InsertionSort(Container<T, std::allocator<T> >& arr, const size_t& n) {
@@ -110,15 +111,43 @@ void QuickSort(Container<T, std::allocator<T> >& arr, const size_t& low, const s
 }
 
 template< template < typename, typename > class Container, typename T >
+void CountSort(Container<T, std::allocator<T> >& arr, const size_t& n) {
+	T max = arr[0];
+	
+	for (int i = 1; i < n; ++i) {
+		if (arr[i] > max) {
+			max = arr[i];
+		}
+	}
+
+	std::vector<T> output(max + 1);
+	std::vector<T> count(max + 1);
+
+	for (int i = 0; i < n; ++i) {
+		++count[arr[i]];
+	}
+
+	for (int i = 1; i <= max; ++i) {
+		count[i] += count[i - 1];
+	}
+
+	for (int i = n - 1; i >= 0; --i) {
+		output[count[arr[i]] - 1] = arr[i];
+		--count[arr[i]];
+	}
+
+	for (int i = 0; i < n; ++i) {
+		arr[i] = output[i];
+	}
+}
+
+template< template < typename, typename > class Container, typename T >
 void HybridSort(Container<T, std::allocator<T> >& arr, const size_t& n) {
-	if (n <= 1000) {
+	if (n <= 30) {
 		InsertionSort(arr, n);
 	}
-	else if (n > 1000 && n <= 10000) {
-		QuickSort(arr, 0, n);
-	}
 	else {
-		MergeSort(arr, n);
+		QuickSort(arr, 0, n);
 	}
 }
 

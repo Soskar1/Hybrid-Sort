@@ -21,6 +21,28 @@ void InsertionSort(Container<T, std::allocator<T> >& arr, const size_t& n) {
 
 namespace details {
 	template< template < typename, typename > class Container, typename T >
+	int Partition(Container<T, std::allocator<T> >& arr, const size_t& low, const size_t& top) {
+		T pivot = arr[low];
+		int i = low - 1;
+		int j = top + 1;
+
+		while (true) {
+			do {
+				++i;
+			} while (arr[i] < pivot);
+
+			do {
+				--j;
+			} while (arr[j] > pivot);
+
+			if (i >= j)
+				return j;
+
+			std::swap(arr[i], arr[j]);
+		}
+	}
+
+	template< template < typename, typename > class Container, typename T >
 	void Merge(Container<T, std::allocator<T> >& arr, const size_t& left, const size_t& mid, const size_t& right) {
 		const size_t arr1Size = mid - left + 1;
 		const size_t arr2Size = right - mid;
@@ -59,7 +81,7 @@ namespace details {
 	}
 
 	template< template < typename, typename > class Container, typename T >
-	static void MergeSort(Container<T, std::allocator<T> >& arr, const size_t& begin, const size_t& end) {
+	void MergeSort(Container<T, std::allocator<T> >& arr, const size_t& begin, const size_t& end) {
 		if (begin >= end)
 			return;
 
@@ -73,6 +95,31 @@ namespace details {
 template< template < typename, typename > class Container, typename T >
 void MergeSort(Container<T, std::allocator<T> >&arr, const size_t& n) {
 	details::MergeSort(arr, 0, n);
+}
+
+template< template < typename, typename > class Container, typename T >
+void QuickSort(Container<T, std::allocator<T> >& arr, const size_t& low, const size_t& top) {
+	if (low >= top) {
+		return;
+	}
+
+	int partition = details::Partition(arr, low, top);
+
+	QuickSort(arr, low, partition);
+	QuickSort(arr, partition + 1, top);
+}
+
+template< template < typename, typename > class Container, typename T >
+void HybridSort(Container<T, std::allocator<T> >& arr, const size_t& n) {
+	if (n <= 1000) {
+		InsertionSort(arr, n);
+	}
+	else if (n > 1000 && n <= 10000) {
+		QuickSort(arr, 0, n);
+	}
+	else {
+		MergeSort(arr, n);
+	}
 }
 
 #endif

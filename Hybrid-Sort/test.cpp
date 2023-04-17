@@ -4,7 +4,7 @@
 #include "SortingAlgorithms.h"
 #include "Experimentator.h"
 
-#define ARRAY_SIZE 2000
+#define ARRAY_SIZE 3500
 
 int main() {
 	srand((unsigned)time(NULL));
@@ -33,16 +33,6 @@ int main() {
 		});
 
 	std::cout << "QuickSort: " << time << " microseconds\n";
-
-	time = GetAverageExecutionTime([&arr]() {
-		CountSort(arr, arr.size());
-		}, [&arr]() {
-			for (int i = 0; i < ARRAY_SIZE; ++i) {
-				arr[i] = rand();
-			}
-		});
-
-	std::cout << "CountSort: " << time << " microseconds\n";
 
 	time = GetAverageExecutionTime([&arr]() {
 		HybridSort(arr, arr.size() - 1);

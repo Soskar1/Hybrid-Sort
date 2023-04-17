@@ -128,7 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Experimentator.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Example.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>

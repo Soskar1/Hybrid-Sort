@@ -13,7 +13,7 @@ void InsertionSort(Container<T, std::allocator<T> >& arr, const size_t& n) {
 	if (n > 0) {
 		InsertionSort(arr, n - 1);
 		T x = arr[n];
-		int32_t j = n - 1;
+		int j = n - 1;
 
 		while (j >= 0 && arr[j] > x) {
 			arr[j + 1] = arr[j];
@@ -78,6 +78,9 @@ void QuickSort(Container<T, std::allocator<T> >& arr, const size_t& low, const s
 
 template< template < typename, typename > class Container, typename T >
 void HybridSort(Container<T, std::allocator<T> >& arr, const size_t& n) {
+	if (n == 0)
+		return;
+
 	float sortedPercentage = details::GetPercentageOfSortedItems(arr, n);
 
 	if (sortedPercentage == 1)
@@ -85,6 +88,7 @@ void HybridSort(Container<T, std::allocator<T> >& arr, const size_t& n) {
 
 	if (sortedPercentage >= PERCENTAGE_OF_SORTED_ITEMS) {
 		InsertionSort(arr, n);
+		return;
 	}
 	
 	if (n <= INSERTION_SORT_ARRAY_SIZE) {
